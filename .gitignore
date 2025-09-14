@@ -28,8 +28,11 @@ go.work.sum
 .env
 
 # Editor/IDE
- .idea/
- .vscode/
+.idea/
+.vscode/
 
 # Swagger Docs
 docs/
+
+# Air Temp Dir
+tmp/
