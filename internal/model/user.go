@@ -1,12 +1,18 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
-	ID       int    `gorm:"primaryKey;autoIncrement"` // Table id
-	UserID   string `gorm:"unique"`                   // User ID
-	Name     string `gorm:"unique"`                   // User Name
-	Email    string `gorm:"unique"`                   // User Email
-	Password string `gorm:"size:255"`                 // User Password hash(Argon2)
+	UserID    int64     `gorm:"primaryKey;unique"` // User ID
+	Name      string    `gorm:"size:32;not null"`  // User Name
+	Email     string    `gorm:"size:64;not null"`  // User Email
+	Password  string    `gorm:"size:255;not null"` // User Password hash(Argon2)
+	CreatedAt time.Time `gorm:"->"`                // Create Time
+
+	_ struct{} `gorm:"uniqueIndex:idx_name_email"`
 }

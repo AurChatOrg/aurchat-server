@@ -7,8 +7,11 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// New Return the configured zap instance based on the environment
-func New(env string) *zap.Logger {
+// Global Logger
+var Logger *zap.Logger
+
+// InitLogger Return the configured zap instance based on the environment
+func InitLogger(env string) *zap.Logger {
 	var cfg zap.Config
 	if env == "prod" {
 		cfg = zap.NewProductionConfig()
@@ -22,5 +25,7 @@ func New(env string) *zap.Logger {
 		enc.AppendString(t.Format("2006-01-02 15:04:05"))
 	}
 	l, _ := cfg.Build()
+
+	Logger = l
 	return l
 }

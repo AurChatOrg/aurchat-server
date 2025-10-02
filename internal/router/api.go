@@ -3,6 +3,7 @@ package router
 
 import (
 	"github.com/AurChatOrg/aurchat-server/internal/config"
+	"github.com/AurChatOrg/aurchat-server/internal/router/api/auth"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -17,16 +18,19 @@ func RegisterAPI(route *gin.Engine, cfg *config.Config) {
 
 		// Swagger UI
 		api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+		// Auth API
+		auth.RegisterAuthAPI(api)
 	}
 }
 
 // ping godoc
 // @Summary  Health check
 // @Description Returns pong to verify service liveness
-// @Tags     health
+// @Tags     Health check
 // @Accept   json
 // @Produce  json
-// @Success  200  {object}  map[string]string "{"msg":"pong"}"
+// @Success  200  {object}	dto.Pong
 // @Router   /ping [get]
 func ping(c *gin.Context) {
 	c.JSON(200, gin.H{"msg": "pong"})

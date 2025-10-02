@@ -1,11 +1,13 @@
 package config
 
 type Config struct {
-	App   App
-	HTTP  HTTP
-	Redis Redis
-	NATS  NATS
-	DSN   DSN
+	App       App
+	HTTP      HTTP
+	Redis     Redis
+	NATS      NATS
+	DSN       DSN
+	Auth      Auth
+	SnowFlake SnowFlake
 }
 
 type App struct {
@@ -28,4 +30,18 @@ type NATS struct {
 
 type DSN struct {
 	Postgres string
+}
+
+type Auth struct {
+	Keys string
+	TTL  string
+}
+
+type SnowFlake struct {
+	WorkerIdBitLength string
+	WorkerID          string
+	SeqBitLength      string
+	MinSeqNumber      string
+	MaxSeqNumber      string
+	BaseTime          string
 }

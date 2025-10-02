@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/AurChatOrg/aurchat-server/internal/router"
 	"github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
 	"github.com/AurChatOrg/aurchat-server/internal/config"
-	"github.com/AurChatOrg/aurchat-server/internal/router"
 )
 
 func NewHTTPServer(cfg *config.Config, log *zap.Logger) *http.Server {

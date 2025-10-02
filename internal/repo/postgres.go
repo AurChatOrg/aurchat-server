@@ -1,27 +1,37 @@
 package repo
 
 import (
+	"sync"
+
 	"github.com/AurChatOrg/aurchat-server/internal/config"
 	"github.com/AurChatOrg/aurchat-server/internal/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-var Postgres *gorm.DB
+var (
+	Postgres *gorm.DB
+	initOnce sync.Once
+	initErr  error
+)
 
 // InitPostgres Init Postgres
 func InitPostgres(cfg *config.Config) error {
-	var err error
-	Postgres, err = gorm.Open(postgres.Open(cfg.DSN.Postgres), &gorm.Config{})
+	initOnce.Do(func() {
+		db, err := gorm.Open(postgres.Open(cfg.DSN.Postgres), &gorm.Config{})
+		if err != nil {
+			initErr = err
+			return
+		}
+		if err = db.AutoMigrate(&model.User{}); err != nil {
+			initErr = err
+			return
+		}
 
-	if err != nil {
-		return err
-	}
-
-	err = Postgres.AutoMigrate(&model.User{})
-	if err != nil {
-		return err
-	}
-
-	return nil
+		postgresDB, _ := db.DB()
+		postgresDB.SetMaxOpenConns(100)
+		postgresDB.SetMaxIdleConns(10)
+		Postgres = db
+	})
+	return initErr
 }

@@ -8,6 +8,7 @@ import (
 var (
 	once sync.Once
 	cfg  *Config
+	Cfg  *Config
 )
 
 // Load Load env
@@ -31,8 +32,14 @@ func Load() *Config {
 			DSN: DSN{
 				Postgres: readEnv("POSTGRES_DSN", "host=localhost user=user password=pass dbname=aurchat port=5432 sslmode=disable"),
 			},
+			Auth: Auth{
+				Keys: readEnv("AUTH_KEY", "abcd1234abcd1234abcd1234abcd1234"),
+				TTL:  readEnv("AUTH_TTL", "259200"),
+			},
 		}
 	})
+
+	Cfg = cfg
 	return cfg
 }
 
