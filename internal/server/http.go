@@ -12,6 +12,8 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/AurChatOrg/aurchat-server/internal/config"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func NewHTTPServer(cfg *config.Config, log *zap.Logger) *http.Server {
@@ -25,7 +27,8 @@ func NewHTTPServer(cfg *config.Config, log *zap.Logger) *http.Server {
 	engine.Use(ginzap.RecoveryWithZap(log, true))
 
 	// Register Route
-	router.RegisterAPI(engine, cfg) // /api/*
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // Swagger UI
+	router.RegisterAPI(engine, cfg)                                           // /api/*
 	//router.RegisterWS(engine, cfg)  // /ws
 	//router.RegisterRTC(engine, cfg) // /rtc/*
 

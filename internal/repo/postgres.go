@@ -18,7 +18,7 @@ var (
 // InitPostgres Init Postgres
 func InitPostgres(cfg *config.Config) error {
 	initOnce.Do(func() {
-		db, err := gorm.Open(postgres.Open(cfg.DSN.Postgres), &gorm.Config{})
+		db, err := gorm.Open(postgres.Open(cfg.Database.DSN), &gorm.Config{})
 		if err != nil {
 			initErr = err
 			return

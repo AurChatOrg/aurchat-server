@@ -66,8 +66,8 @@ func SignIn(c *gin.Context) {
 
 	// If password is right, generate a token and return
 	brancaToken := token.NewBrancaToken(config.Cfg, 3600*24*30) // Create a new BrancaToken instance
-	newToken := brancaToken.GenerateToken(req.Username, user.UserID)
-	if newToken == "" {
+	newToken, err := brancaToken.GenerateToken(req.Username, user.UserID)
+	if newToken == "" || err != nil {
 		c.JSON(http.StatusInternalServerError, dto.ErrorResp{Code: code.ServerUnknownError})
 		return
 	}

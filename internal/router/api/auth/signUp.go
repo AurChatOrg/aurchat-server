@@ -15,6 +15,7 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 // SignUp godoc
@@ -46,37 +47,43 @@ func SignUp(c *gin.Context) {
 	}
 
 	// Create a new User struct
-	/* SnowFlake instance */
-	nodeId := int64(1)                     // Set Node ID
-	node, err := snowflake.NewNode(nodeId) // Create a SnowFlake Node
-	if err != nil {
-		logger.Logger.Error("Create a new Snowflake Node error", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, dto.ErrorResp{Code: code.ServerUnknownError})
+	errs := repo.Postgres.Transaction(func(tx *gorm.DB) error {
+		/* SnowFlake instance */
+		node, err := snowflake.NewNode(config.Cfg.Snowflake.WorkerID) // Create a SnowFlake Node
+		if err != nil {
+			logger.Logger.Error("Create a new Snowflake Node error", zap.Error(err))
+			c.JSON(http.StatusInternalServerError, dto.ErrorResp{Code: code.ServerUnknownError})
+			return err
+		}
+
+		/* Argon2Hash instance */
+		argon2Hash := hash.NewArgon2Hash(config.Cfg.Hash.Memory, config.Cfg.Hash.Interactions, uint8(runtime.NumCPU()), config.Cfg.Hash.SaltLength, config.Cfg.Hash.KeyLength)
+
+		/* Generate User ID and Password(hashed) */
+		id := int64(node.Generate())                          // Generate User ID
+		passwordHash := argon2Hash.GenerateHash(req.Password) // Hash password
+
+		user := model.User{
+			UserID:   id,
+			Name:     req.Username,
+			Password: passwordHash,
+			Email:    req.Email,
+		}
+
+		tx.Create(&user)
+
+		brancaToken := token.NewBrancaToken(config.Cfg, config.Cfg.Auth.TTL) // Create a new BrancaToken instance
+		newToken, err := brancaToken.GenerateToken(user.Name, user.UserID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, dto.ErrorResp{Code: code.ServerUnknownError})
+			return err
+		}
+
+		c.JSON(http.StatusOK, dto.TokenResp{Token: newToken})
+		return nil
+	})
+
+	if errs != nil {
 		return
 	}
-
-	/* Argon2Hash instance */
-	argon2Hash := hash.NewArgon2Hash(32*1024, 4, uint8(runtime.NumCPU()), 16, 32)
-
-	/* Generate User ID and Password(hashed) */
-	id := int64(node.Generate())                          // Generate User ID
-	passwordHash := argon2Hash.GenerateHash(req.Password) // Hash password
-
-	user := model.User{
-		UserID:   id,
-		Name:     req.Username,
-		Password: passwordHash,
-		Email:    req.Email,
-	}
-
-	repo.Postgres.Create(&user)
-
-	brancaToken := token.NewBrancaToken(config.Cfg, 3600*24*30) // Create a new BrancaToken instance
-	newToken := brancaToken.GenerateToken(user.Name, user.UserID)
-	if newToken == "" {
-		c.JSON(http.StatusInternalServerError, dto.ErrorResp{Code: code.ServerUnknownError})
-		return
-	}
-
-	c.JSON(http.StatusOK, dto.TokenResp{Token: newToken})
 }

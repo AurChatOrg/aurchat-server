@@ -5,8 +5,6 @@ import (
 	"github.com/AurChatOrg/aurchat-server/internal/config"
 	"github.com/AurChatOrg/aurchat-server/internal/router/api/auth"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // RegisterAPI mounts all /api/v1 endpoints.
@@ -15,9 +13,6 @@ func RegisterAPI(route *gin.Engine, cfg *config.Config) {
 	{
 		// Health
 		api.GET("/ping", ping)
-
-		// Swagger UI
-		api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 		// Auth API
 		auth.RegisterAuthAPI(api)

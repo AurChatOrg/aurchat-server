@@ -36,9 +36,9 @@ func NewBrancaToken(cfg *config.Config, ttl uint32) *BrancaToken {
 }
 
 // GenerateToken Generate a new branca token
-func (b *BrancaToken) GenerateToken(username string, userId int64) string {
+func (b *BrancaToken) GenerateToken(username string, userId int64) (string, error) {
 	if username == "" {
-		return ""
+		return "", errors.New("username cannot be blank")
 	}
 
 	// Encode User information
@@ -50,17 +50,17 @@ func (b *BrancaToken) GenerateToken(username string, userId int64) string {
 	userData, err := json.Marshal(userInfo)
 	if err != nil {
 		logger.Logger.Error("Error marshalling user info", zap.Error(err))
-		return ""
+		return "", err
 	}
 
 	// Generate branca token
 	token, err := b.branca.EncodeToString([]byte(userData))
 	if err != nil {
 		logger.Logger.Error("Error encoding token", zap.Error(err))
-		return ""
+		return "", err
 	}
 
-	return token
+	return token, nil
 }
 
 // ParseToken Parse branca token
