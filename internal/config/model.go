@@ -46,8 +46,8 @@ type Snowflake struct {
 }
 
 type Hash struct {
-	Memory       uint32 `yaml:"memory"`
-	Interactions uint32 `yaml:"interactions"`
-	SaltLength   uint32 `yaml:"salt_length"`
-	KeyLength    uint32 `yaml:"key_length"`
+	Memory     uint32 `yaml:"memory"`
+	Inerations uint32 `yaml:"iterations"`
+	SaltLength uint32 `yaml:"salt_length"`
+	KeyLength  uint32 `yaml:"key_length"`
 }

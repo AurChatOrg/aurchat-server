@@ -12,8 +12,8 @@ import (
 	"go.uber.org/zap"
 )
 
-// BrancaToken Branca's encapsulation structure
-type BrancaToken struct {
+// Token Branca's encapsulation structure
+type Token struct {
 	branca branca.Branca
 	ttl    uint32
 }
@@ -24,19 +24,19 @@ type UserClaims struct {
 	UserID   int64  `json:"userID"`
 }
 
-// NewBrancaToken New branca instance
-func NewBrancaToken(cfg *config.Config, ttl uint32) *BrancaToken {
+// NewToken New branca instance
+func NewToken(cfg *config.Config, ttl uint32) *Token {
 	brc, err := branca.NewBranca([]byte(cfg.Auth.Keys)) // Create new branca struct
 
 	if err != nil {
 		logger.Logger.Fatal("Error creating Branca struct", zap.Error(err))
 	}
 
-	return &BrancaToken{branca: brc, ttl: ttl}
+	return &Token{branca: brc, ttl: ttl}
 }
 
-// GenerateToken Generate a new branca token
-func (b *BrancaToken) GenerateToken(username string, userId int64) (string, error) {
+// Generate Generate a new branca token
+func (b *Token) Generate(username string, userId int64) (string, error) {
 	if username == "" {
 		return "", errors.New("username cannot be blank")
 	}
@@ -63,8 +63,8 @@ func (b *BrancaToken) GenerateToken(username string, userId int64) (string, erro
 	return token, nil
 }
 
-// ParseToken Parse branca token
-func (b *BrancaToken) ParseToken(token string) (UserClaims, error) {
+// Parse Parse branca token
+func (b *Token) Parse(token string) (UserClaims, error) {
 	// Decode token
 	raw, err := b.branca.DecodeString(token)
 	if err != nil {

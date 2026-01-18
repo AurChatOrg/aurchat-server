@@ -1,8 +1,0 @@
-root = "."
-tmp_dir = "tmp"
-
-[build]
-  cmd = "go build -o tmp/main.exe ./cmd/gateway"
-  bin = "tmp/main.exe"
-  full_bin = "tmp/main.exe"
-  runner = "cmd"
