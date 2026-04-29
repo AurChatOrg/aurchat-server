@@ -1,4 +1,4 @@
-import { createAuthClient } from "better-auth/react"
+import { createAuthClient } from "better-auth/react";
 export const authClient = createAuthClient({
-    baseURL: process.env.BACKEND_URL!
-})
+    baseURL: process.env.BACKEND_URL!,
+});
