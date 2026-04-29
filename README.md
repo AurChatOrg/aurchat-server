@@ -20,6 +20,9 @@ bun run dev
 `env
 # Auth secrret
 BETTER_AUTH_SECRET=YOUR_AUTH_SECRET
+
+# Database (SQLite Temp)
+DB_FILE_NAME=YOUR_SQLITE_FILE_NAME
 `
 
 ## Related Links

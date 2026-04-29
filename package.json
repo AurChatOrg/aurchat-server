@@ -1,18 +1,26 @@
 {
-  "name": "aurchat-server",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts",
-    "lint": "biome check",
+    "name": "aurchat-server",
+    "version": "1.0.0",
+    "module": "src/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "bun run --watch src/index.ts",
+        "lint": "biome check",
         "format": "biome format --write"
-  },
-  "dependencies": {
-    "elysia": "latest"
-  },
-  "devDependencies": {
-    "biome": "^0.3.3",
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+    },
+    "dependencies": {
+        "@libsql/client": "^0.17.3",
+        "dotenv": "^17.4.2",
+        "drizzle-orm": "^0.45.2",
+        "drizzle-typebox": "^0.3.3",
+        "elysia": "latest"
+    },
+    "devDependencies": {
+        "biome": "^0.3.3",
+        "bun-types": "latest",
+        "drizzle-kit": "^0.31.10"
+    },
+    "overrides": {
+        "@sinclair/typebox": "0.34.0"
+    }
 }
