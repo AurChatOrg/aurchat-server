@@ -1,15 +1,27 @@
-# Elysia with Bun runtime
+# Aurchat Backend
+> This is the backend application for Aurchat, built with Next.js.
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
-```bash
-bun create elysia ./elysia-example
-```
+### 1. Prerequisites
+- Bun >= 1.3.12
+- Ensure the backend service is running (http://localhost:3001)
 
-## Development
-To start the development server run:
+### 2. Installation & Running
 ```bash
+# Clone the repository
+git clone https://github.com/AurChatOrg/aurchat-server.git
+
+# Install dependencies
+bun install
+
+# Start the development server
 bun run dev
-```
 
-Open http://localhost:3000/ with your browser to see the result.
+## Environment Variables (.env.local)
+`env
+# Auth secrret
+BETTER_AUTH_SECRET=YOUR_AUTH_SECRET
+`
+
+## Related Links
+- **Frontend**: [Frontend Repo](https://github.com/AurChatOrg/aurchat-frontend)
+- **Product Requirements**: [PRD Link](PRD.md)

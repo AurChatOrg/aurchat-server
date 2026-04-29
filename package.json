@@ -1,14 +1,17 @@
 {
-  "name": "aurchat-backend",
+  "name": "aurchat-server",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "lint": "biome check",
+        "format": "biome format --write"
   },
   "dependencies": {
     "elysia": "latest"
   },
   "devDependencies": {
+    "biome": "^0.3.3",
     "bun-types": "latest"
   },
   "module": "src/index.js"
