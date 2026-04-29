@@ -3,7 +3,6 @@
 
 ### 1. Prerequisites
 - Bun >= 1.3.12
-- Ensure the backend service is running (http://localhost:3001)
 
 ### 2. Installation & Running
 ```bash
@@ -23,6 +22,12 @@ BETTER_AUTH_SECRET=YOUR_AUTH_SECRET
 
 # Database (SQLite Temp)
 DB_FILE_NAME=YOUR_SQLITE_FILE_NAME
+
+# Frontend URL
+BETTER_AUTH_URL=YOUR_FRONTEND_URL
+
+# Backend port
+LISTENING_PORT=APP_LISTENING_PORT
 `
 
 ## Related Links

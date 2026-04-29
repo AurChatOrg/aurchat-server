@@ -9,7 +9,9 @@
         "format": "biome format --write"
     },
     "dependencies": {
+        "@elysiajs/cors": "^1.4.2",
         "@libsql/client": "^0.17.3",
+        "better-auth": "^1.6.9",
         "dotenv": "^17.4.2",
         "drizzle-orm": "^0.45.2",
         "drizzle-typebox": "^0.3.3",
